@@ -197,7 +197,7 @@ function Hero({onReq}){
               <a href={`https://wa.me/${WA}?text=${WAM}`} target="_blank" rel="noopener noreferrer" style={S.btnWa}><Icon name="whatsapp" size={16} color="#25D366"/>WhatsApp</a>
             </div></F>
             <F delay={0.65}><div style={{marginTop:40,display:"flex",gap:16,flexWrap:"wrap"}}>
-              {[{v:"100%",l:"Bioseguridad"},{v:"Rápida",l:"Respuesta"},{v:"Personal",l:"Experto"}].map((s,i)=>( 
+              {[{v:"100%",l:"Bioseguridad"},{v:"Rápida",l:"Respuesta"},{v:"Personal",l:"Especializado"}].map((s,i)=>( 
                 <div key={i} style={{textAlign:"center",padding:14,borderRadius:16,background:"rgba(255,255,255,.78)",border:`1px solid ${C.line}`,minWidth:100,boxShadow:"0 10px 30px rgba(13,39,86,.04)"}}>
                   <div style={{color:C.text,fontWeight:800,fontSize:14}}>{s.v}</div>
                   <div style={{color:C.muted,fontSize:11}}>{s.l}</div>
