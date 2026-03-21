@@ -394,7 +394,7 @@ function Testimonials(){
       setStatus({type:"ok",msg:"Su reseña fue enviada correctamente. Se publicará después de la revisión."});
       setForm({nombre:"",distrito:"",resena:"",puntuacion:"5"});
     }catch{
-      setStatus({type:"error",msg:"No se pudo enviar la reseña. Verifique la API PHP en Hostinger o XAMPP."});
+      setStatus({type:"error",msg:"Ocurrió un error al enviar. Intente nuevamente"});
     }finally{
       setSubmitting(false);
     }
@@ -432,7 +432,7 @@ function Testimonials(){
               <button type="submit" disabled={submitting} style={{...S.btn1,justifyContent:"center",opacity:submitting?0.8:1}}>{submitting ? "Enviando..." : "Enviar reseña"}</button>
               {status.msg && <div style={{fontSize:13,fontWeight:700,color:status.type==="ok"?"#227a74":"#a14b3b",background:status.type==="ok"?"#eef9f7":"#fff3ef",border:`1px solid ${status.type==="ok"?"#c9ece7":"#f0c5bb"}`,padding:"12px 14px",borderRadius:12}}>{status.msg}</div>}
             </form>
-            <div style={{fontSize:12,color:"#6a7b8c",lineHeight:1.6,marginTop:14}}>En Hostinger debe crear la tabla MySQL y configurar el archivo /api/db.php con sus credenciales.</div>
+            <div style={{fontSize:12,color:"#6a7b8c",lineHeight:1.6,marginTop:14}}>Las reseñas aprobadas se publicarán próximamente</div>
           </div></F>
         </div>
       </div>
