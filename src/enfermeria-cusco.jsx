@@ -269,7 +269,7 @@ function Hero({onReq}){
 
 function TrustBar(){
   return<div style={{padding:"18px 20px",borderBottom:"1px solid #d6e6e5",display:"flex",justifyContent:"center",flexWrap:"wrap",gap:24}}>
-    {[["shield","Bioseguridad Garantizada"],["check","Enfermeras Colegiadas"],["care","Atención con calidez Humana"],["clock","Respuesta Inmediata"],["home","Servicio a Domicilio"]].map(([icon,t],i)=><span key={i} style={{fontSize:13,fontWeight:500,color:"#5e7b84",display:"inline-flex",alignItems:"center",gap:8}}><Icon name={icon} size={14} color={C.brand}/>{t}</span>)}
+    {[["shield","Bioseguridad Garantizada"],["check","Personal Especializado"],["care","Atención con calidez Humana"],["clock","Respuesta Inmediata"],["home","Servicio a Domicilio"]].map(([icon,t],i)=><span key={i} style={{fontSize:13,fontWeight:500,color:"#5e7b84",display:"inline-flex",alignItems:"center",gap:8}}><Icon name={icon} size={14} color={C.brand}/>{t}</span>)}
   </div>;
 }
 
