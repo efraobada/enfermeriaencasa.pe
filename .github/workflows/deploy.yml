@@ -1,0 +1,40 @@
+name: Build y Deploy a Hostinger
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:  # Permite lanzar manualmente desde GitHub
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Obtener código
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Build de producción
+        run: npm run build
+
+      - name: Subir a Hostinger via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USER }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./dist/
+          server-dir: /
+          # No sobreescribir db.php que existe solo en el servidor
+          exclude: |
+            **/db.php
+            **/.git*
+            **/node_modules/**
