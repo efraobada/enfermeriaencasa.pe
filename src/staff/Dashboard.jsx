@@ -1488,7 +1488,7 @@ export default function Dashboard() {
       {/* Top bar */}
       <header style={{background:C.surface,borderBottom:`1px solid ${C.border}`,padding:"0 20px",height:64,display:"flex",alignItems:"center",justifyContent:"space-between",flexShrink:0,position:"sticky",top:0,zIndex:100,boxShadow:"0 4px 20px rgba(13,39,86,.06)"}}>
         <div style={{display:"flex",alignItems:"center",gap:14}}>
-          <button onClick={()=>setSideOpen(o=>!o)} style={{display:"none",background:"none",border:"none",cursor:"pointer",color:C.text,padding:"4px 8px",borderRadius:8,gap:6,alignItems:"center",fontSize:13,fontWeight:700}} className="mob-ham"><Ic n="menu" s={22} c={C.text}/><span>Pacientes</span></button>
+          {vista==="pacientes"&&<button onClick={()=>setSideOpen(o=>!o)} style={{display:"none",background:"none",border:"none",cursor:"pointer",color:C.text,padding:"4px 8px",borderRadius:8,gap:6,alignItems:"center",fontSize:13,fontWeight:700}} className="mob-ham"><Ic n="menu" s={22} c={C.text}/><span>Pacientes</span></button>}
           <a href="/" style={{display:"flex",alignItems:"center",gap:10,textDecoration:"none"}}>
             <div style={{width:38,height:38,borderRadius:10,overflow:"hidden",border:`1px solid ${C.border}`}}>
               <img src="/logobotica.png" alt="Logo" style={{width:"100%",height:"100%",objectFit:"contain"}}/>
