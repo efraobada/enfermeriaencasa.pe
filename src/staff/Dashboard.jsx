@@ -1509,36 +1509,64 @@ export default function Dashboard() {
               <span style={{fontSize:11,color:C.muted,textTransform:"capitalize"}}>{user?.rol}</span>
             </div>
           </div>
-          <button onClick={()=>setVista("pacientes")} style={{...btn(vista==="pacientes"?"linear-gradient(135deg,#2ca9bc,#0d2756)":"#f1f5f9"),color:vista==="pacientes"?"#fff":C.muted,padding:"8px 14px",fontSize:13}}>
-            <Ic n="user" s={14} c={vista==="pacientes"?"#fff":C.muted}/>
-            <span className="logout-label">Pacientes</span>
-          </button>
-          <button onClick={()=>setVista(v=>v==="caja"?"pacientes":"caja")} style={{...btn(vista==="caja"?"linear-gradient(135deg,#16a34a,#15803d)":"#f1f5f9"),color:vista==="caja"?"#fff":C.muted,padding:"8px 14px",fontSize:13}}>
-            <span style={{fontSize:14,lineHeight:1}}>💰</span>
-            <span className="logout-label">Caja</span>
-          </button>
-          {isAdmin&&(<>
-            <button onClick={()=>setVista(v=>v==="stats"?"pacientes":"stats")} style={{...btn(vista==="stats"?"linear-gradient(135deg,#2f9c95,#184c61)":"#f1f5f9"),color:vista==="stats"?"#fff":C.muted,padding:"8px 14px",fontSize:13}}>
-              <Ic n="activity" s={14} c={vista==="stats"?"#fff":C.muted}/>
-              <span className="logout-label">Dashboard</span>
+          <div className="desk-nav" style={{display:"flex",alignItems:"center",gap:8}}>
+            <button onClick={()=>setVista("pacientes")} style={{...btn(vista==="pacientes"?"linear-gradient(135deg,#2ca9bc,#0d2756)":"#f1f5f9"),color:vista==="pacientes"?"#fff":C.muted,padding:"8px 14px",fontSize:13}}>
+              <Ic n="user" s={14} c={vista==="pacientes"?"#fff":C.muted}/>
+              Pacientes
             </button>
-            <button onClick={()=>setVista(v=>v==="turnos"?"pacientes":"turnos")} style={{...btn(vista==="turnos"?"linear-gradient(135deg,#e9b86d,#d97745)":"#f1f5f9"),color:vista==="turnos"?"#fff":C.muted,padding:"8px 14px",fontSize:13}}>
-              <Ic n="check" s={14} c={vista==="turnos"?"#fff":C.muted}/>
-              <span className="logout-label">Turnos</span>
+            <button onClick={()=>setVista(v=>v==="caja"?"pacientes":"caja")} style={{...btn(vista==="caja"?"linear-gradient(135deg,#16a34a,#15803d)":"#f1f5f9"),color:vista==="caja"?"#fff":C.muted,padding:"8px 14px",fontSize:13}}>
+              <span style={{fontSize:14,lineHeight:1}}>💰</span>
+              Caja
             </button>
-            <button onClick={()=>setVista(v=>v==="personal"?"pacientes":"personal")} style={{...btn(vista==="personal"?"linear-gradient(135deg,#7c3aed,#6d28d9)":"#f1f5f9"),color:vista==="personal"?"#fff":C.muted,padding:"8px 14px",fontSize:13}}>
-              <Ic n="users" s={14} c={vista==="personal"?"#fff":C.muted}/>
-              <span className="logout-label">Personal</span>
+            {isAdmin&&(<>
+              <button onClick={()=>setVista(v=>v==="stats"?"pacientes":"stats")} style={{...btn(vista==="stats"?"linear-gradient(135deg,#2f9c95,#184c61)":"#f1f5f9"),color:vista==="stats"?"#fff":C.muted,padding:"8px 14px",fontSize:13}}>
+                <Ic n="activity" s={14} c={vista==="stats"?"#fff":C.muted}/>
+                Dashboard
+              </button>
+              <button onClick={()=>setVista(v=>v==="turnos"?"pacientes":"turnos")} style={{...btn(vista==="turnos"?"linear-gradient(135deg,#e9b86d,#d97745)":"#f1f5f9"),color:vista==="turnos"?"#fff":C.muted,padding:"8px 14px",fontSize:13}}>
+                <Ic n="check" s={14} c={vista==="turnos"?"#fff":C.muted}/>
+                Turnos
+              </button>
+              <button onClick={()=>setVista(v=>v==="personal"?"pacientes":"personal")} style={{...btn(vista==="personal"?"linear-gradient(135deg,#7c3aed,#6d28d9)":"#f1f5f9"),color:vista==="personal"?"#fff":C.muted,padding:"8px 14px",fontSize:13}}>
+                <Ic n="users" s={14} c={vista==="personal"?"#fff":C.muted}/>
+                Personal
+              </button>
+            </>)}
+            <button onClick={()=>setConfirmLogout(true)} style={{...btn("#f1f5f9"),color:C.muted,padding:"8px 14px",fontSize:13}}>
+              <Ic n="logout" s={14} c={C.muted}/>
+              Salir
             </button>
-          </>)}
-          <button onClick={()=>setConfirmLogout(true)} style={{...btn("#f1f5f9"),color:C.muted,padding:"8px 14px",fontSize:13}}>
-            <Ic n="logout" s={14} c={C.muted}/>
-            <span className="logout-label">Salir</span>
-          </button>
+          </div>
         </div>
       </header>
 
-      <div style={{display:"flex",flex:1,overflow:"hidden",maxHeight:"calc(100vh - 64px)",width:"100%",minWidth:0}}>
+      {/* Mobile tab bar */}
+      <nav className="mob-tabs" style={{display:"none",background:C.surface,borderBottom:`1px solid ${C.border}`,overflowX:"auto",flexShrink:0}}>
+        <div style={{display:"flex",gap:6,padding:"8px 12px",minWidth:"max-content"}}>
+          <button onClick={()=>setVista("pacientes")} style={{...btn(vista==="pacientes"?"linear-gradient(135deg,#2ca9bc,#0d2756)":"#f1f5f9"),color:vista==="pacientes"?"#fff":C.muted,padding:"8px 14px",fontSize:13,whiteSpace:"nowrap"}}>
+            <Ic n="user" s={14} c={vista==="pacientes"?"#fff":C.muted}/>Pacientes
+          </button>
+          <button onClick={()=>setVista("caja")} style={{...btn(vista==="caja"?"linear-gradient(135deg,#16a34a,#15803d)":"#f1f5f9"),color:vista==="caja"?"#fff":C.muted,padding:"8px 14px",fontSize:13,whiteSpace:"nowrap"}}>
+            <span style={{fontSize:14,lineHeight:1}}>💰</span>Caja
+          </button>
+          {isAdmin&&<>
+            <button onClick={()=>setVista("stats")} style={{...btn(vista==="stats"?"linear-gradient(135deg,#2f9c95,#184c61)":"#f1f5f9"),color:vista==="stats"?"#fff":C.muted,padding:"8px 14px",fontSize:13,whiteSpace:"nowrap"}}>
+              <Ic n="activity" s={14} c={vista==="stats"?"#fff":C.muted}/>Dashboard
+            </button>
+            <button onClick={()=>setVista("turnos")} style={{...btn(vista==="turnos"?"linear-gradient(135deg,#e9b86d,#d97745)":"#f1f5f9"),color:vista==="turnos"?"#fff":C.muted,padding:"8px 14px",fontSize:13,whiteSpace:"nowrap"}}>
+              <Ic n="check" s={14} c={vista==="turnos"?"#fff":C.muted}/>Turnos
+            </button>
+            <button onClick={()=>setVista("personal")} style={{...btn(vista==="personal"?"linear-gradient(135deg,#7c3aed,#6d28d9)":"#f1f5f9"),color:vista==="personal"?"#fff":C.muted,padding:"8px 14px",fontSize:13,whiteSpace:"nowrap"}}>
+              <Ic n="users" s={14} c={vista==="personal"?"#fff":C.muted}/>Personal
+            </button>
+          </>}
+          <button onClick={()=>setConfirmLogout(true)} style={{...btn("#f1f5f9"),color:C.muted,padding:"8px 14px",fontSize:13,whiteSpace:"nowrap"}}>
+            <Ic n="logout" s={14} c={C.muted}/>Salir
+          </button>
+        </div>
+      </nav>
+
+      <div style={{display:"flex",flex:1,overflow:"hidden",width:"100%",minWidth:0}}>
         {vista==="personal"&&isAdmin&&<StaffPanel/>}
         {vista==="stats"&&isAdmin&&<StatsPanel/>}
         {vista==="turnos"&&<TurnosPanel isAdmin={isAdmin}/>}
@@ -1709,12 +1737,15 @@ export default function Dashboard() {
       <style>{`
         body{margin:0;overflow-x:hidden}
         .dash-side{transition:transform .25s}
+        .mob-tabs{scrollbar-width:none}
+        .mob-tabs::-webkit-scrollbar{display:none}
         @media(max-width:860px){
-          .dash-side{position:fixed;left:0;top:64px;bottom:0;z-index:90;transform:translateX(-100%);box-shadow:4px 0 24px rgba(13,39,86,.12);width:min(300px,85vw) !important}
+          .dash-side{position:fixed;left:0;top:112px;bottom:0;z-index:90;transform:translateX(-100%);box-shadow:4px 0 24px rgba(13,39,86,.12);width:min(300px,85vw) !important}
           .dash-side.side-open{transform:translateX(0)}
           .mob-ham{display:flex !important}
           .mob-overlay{display:block !important}
-          .logout-label{display:none}
+          .mob-tabs{display:flex !important}
+          .desk-nav{display:none !important}
           .usr-info{display:none !important}
         }
       `}</style>
