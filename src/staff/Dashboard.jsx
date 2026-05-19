@@ -20,6 +20,7 @@ function Ic({n,s=16,c="currentColor"}){
     user:<><circle cx="12" cy="8" r="3"/><path d="M8 19a4 4 0 0 1 8 0"/></>,
     plus:<><path d="M12 5v14M5 12h14"/></>,
     search:<><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></>,
+    menu:<><path d="M3 12h18M3 6h18M3 18h18"/></>,
     logout:<><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/><path d="M9 21H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"/></>,
     heart:<><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1A5.5 5.5 0 0 0 3.2 12.4L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8z"/></>,
     activity:<><path d="M3 13h4l2-5 4 9 2-4h6"/></>,
@@ -1445,6 +1446,12 @@ export default function Dashboard() {
 
   const selectPatient = (p) => { setSelected(p); loadVitals(p.id); loadCobros(p.id); setSideOpen(false); };
 
+  // Auto-open sidebar on mobile when no patient is selected
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width:860px)");
+    if (mq.matches && !selected && vista === "pacientes") setSideOpen(true);
+  }, [selected, vista]);
+
   // Save vital signs
   const saveVitals = async (data) => {
     const r = await authFetch("/api/vitals.php", { method:"POST", body: JSON.stringify({ patient_id: selected.id, ...data }) });
@@ -1477,11 +1484,11 @@ export default function Dashboard() {
   };
 
   return (
-    <div style={{minHeight:"100vh",background:C.bg,fontFamily:"'Nunito Sans',system-ui,sans-serif",display:"flex",flexDirection:"column"}}>
+    <div style={{minHeight:"100vh",width:"100%",background:C.bg,fontFamily:"'Nunito Sans',system-ui,sans-serif",display:"flex",flexDirection:"column",overflowX:"hidden"}}>
       {/* Top bar */}
       <header style={{background:C.surface,borderBottom:`1px solid ${C.border}`,padding:"0 20px",height:64,display:"flex",alignItems:"center",justifyContent:"space-between",flexShrink:0,position:"sticky",top:0,zIndex:100,boxShadow:"0 4px 20px rgba(13,39,86,.06)"}}>
         <div style={{display:"flex",alignItems:"center",gap:14}}>
-          <button onClick={()=>setSideOpen(o=>!o)} style={{display:"none",background:"none",border:"none",cursor:"pointer",color:C.muted,padding:4}} className="mob-ham"><Ic n="search" s={20}/></button>
+          <button onClick={()=>setSideOpen(o=>!o)} style={{display:"none",background:"none",border:"none",cursor:"pointer",color:C.text,padding:"4px 8px",borderRadius:8,gap:6,alignItems:"center",fontSize:13,fontWeight:700}} className="mob-ham"><Ic n="menu" s={22} c={C.text}/><span>Pacientes</span></button>
           <a href="/" style={{display:"flex",alignItems:"center",gap:10,textDecoration:"none"}}>
             <div style={{width:38,height:38,borderRadius:10,overflow:"hidden",border:`1px solid ${C.border}`}}>
               <img src="/logobotica.png" alt="Logo" style={{width:"100%",height:"100%",objectFit:"contain"}}/>
@@ -1497,7 +1504,7 @@ export default function Dashboard() {
             <div style={{width:34,height:34,borderRadius:10,background:"linear-gradient(135deg,#35b5c5,#227a74)",display:"flex",alignItems:"center",justifyContent:"center"}}>
               <Ic n="user" s={16} c="#fff"/>
             </div>
-            <div style={{display:"flex",flexDirection:"column",alignItems:"flex-end"}}>
+            <div style={{display:"flex",flexDirection:"column",alignItems:"flex-end"}} className="usr-info">
               <span style={{fontSize:13,fontWeight:800,color:C.text,lineHeight:1}}>{user?.nombre}</span>
               <span style={{fontSize:11,color:C.muted,textTransform:"capitalize"}}>{user?.rol}</span>
             </div>
@@ -1531,11 +1538,13 @@ export default function Dashboard() {
         </div>
       </header>
 
-      <div style={{display:"flex",flex:1,overflow:"hidden",maxHeight:"calc(100vh - 64px)"}}>
+      <div style={{display:"flex",flex:1,overflow:"hidden",maxHeight:"calc(100vh - 64px)",width:"100%",minWidth:0}}>
         {vista==="personal"&&isAdmin&&<StaffPanel/>}
         {vista==="stats"&&isAdmin&&<StatsPanel/>}
         {vista==="turnos"&&<TurnosPanel isAdmin={isAdmin}/>}
         {vista==="caja"&&<CajaPanel isAdmin={isAdmin}/>}
+        {/* Overlay to close sidebar on mobile */}
+        {sideOpen&&<div onClick={()=>setSideOpen(false)} className="mob-overlay" style={{display:"none",position:"fixed",inset:0,zIndex:89,background:"rgba(13,39,86,.35)"}}/>}
         {/* Sidebar — patient list */}
         <aside className={`dash-side${sideOpen?" side-open":""}`} style={{width:280,background:C.surface,borderRight:`1px solid ${C.border}`,display:vista==="personal"||vista==="stats"||vista==="turnos"||vista==="caja"?"none":"flex",flexDirection:"column",flexShrink:0,overflowY:"auto"}}>
           <div style={{padding:"16px 14px 10px",position:"sticky",top:0,background:C.surface,zIndex:10,borderBottom:`1px solid ${C.border}`}}>
@@ -1698,13 +1707,15 @@ export default function Dashboard() {
       )}
 
       <style>{`
-        body{margin:0}
+        body{margin:0;overflow-x:hidden}
         .dash-side{transition:transform .25s}
         @media(max-width:860px){
-          .dash-side{position:fixed;left:0;top:64px;bottom:0;z-index:90;transform:translateX(-100%);box-shadow:4px 0 24px rgba(13,39,86,.12)}
+          .dash-side{position:fixed;left:0;top:64px;bottom:0;z-index:90;transform:translateX(-100%);box-shadow:4px 0 24px rgba(13,39,86,.12);width:min(300px,85vw) !important}
           .dash-side.side-open{transform:translateX(0)}
           .mob-ham{display:flex !important}
+          .mob-overlay{display:block !important}
           .logout-label{display:none}
+          .usr-info{display:none !important}
         }
       `}</style>
     </div>

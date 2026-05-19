@@ -1,0 +1,41 @@
+Options -Indexes
+RewriteEngine On
+
+# ── Forzar HTTPS ─────────────────────────────────────────────────────────────
+RewriteCond %{HTTP_HOST} !^$
+RewriteCond %{HTTPS} off
+RewriteCond %{HTTP:X-Forwarded-Proto} !https
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# ── Servir archivos y directorios reales directamente (assets, /api/*.php) ───
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# ── React SPA: todo lo demás → index.html ────────────────────────────────────
+RewriteRule ^ /index.html [L]
+
+# ── Cabeceras de seguridad ────────────────────────────────────────────────────
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+
+    # Cache para assets con hash de Vite (nombres como main-BxYz1234.js)
+    <FilesMatch "\.(js|css|woff2?|ttf|svg|ico|png|jpg|jpeg|webp)$">
+        Header set Cache-Control "max-age=31536000, public, immutable"
+    </FilesMatch>
+
+    # No cachear HTML ni PHP
+    <FilesMatch "\.(html|php)$">
+        Header set Cache-Control "no-store, no-cache, must-revalidate"
+    </FilesMatch>
+</IfModule>
+
+# ── Compresión gzip ───────────────────────────────────────────────────────────
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/css text/javascript
+    AddOutputFilterByType DEFLATE application/javascript application/json
+    AddOutputFilterByType DEFLATE image/svg+xml font/woff2
+</IfModule>
