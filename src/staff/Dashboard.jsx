@@ -360,7 +360,14 @@ function downloadCSV(patient, vitals) {
 }
 
 function ReportModal({patient, vitals, onClose}) {
-  const print = () => window.print();
+  const print = () => {
+    const el = document.getElementById('report-content');
+    const win = window.open('','_blank');
+    win.document.write(`<!DOCTYPE html><html><head><meta charset="utf-8"><title>Reporte ${patient.nombre}</title><style>*{box-sizing:border-box}body{font-family:system-ui,-apple-system,sans-serif;margin:0;padding:16px}table{border-collapse:collapse}.no-print{display:none!important}@media print{body{padding:0}.no-print{display:none!important}}</style></head><body>${el.outerHTML}</body></html>`);
+    win.document.close();
+    win.focus();
+    setTimeout(()=>{ win.print(); },400);
+  };
   const gIcon = generoIcon(patient.genero);
 
   return(
@@ -451,13 +458,6 @@ function ReportModal({patient, vitals, onClose}) {
         </div>
       </div>
 
-      <style>{`
-        @media print {
-          body > *:not(#report-content) { display:none !important; }
-          #report-content { position:fixed;inset:0;border-radius:0;box-shadow:none; }
-          .no-print { display:none !important; }
-        }
-      `}</style>
     </div>
   );
 }
